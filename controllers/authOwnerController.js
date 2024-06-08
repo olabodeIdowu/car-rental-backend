@@ -81,7 +81,7 @@ exports.signupOwner = catchAsync(async (req, res, next) => {
   const url = undefined;
   // get OTP
   const otp = newUser.generateOTP();
-  console.log(otp);
+  // console.log(otp);
   // send welcome email to user email address
   await new Email(newUser, url).sendWelcome();
   await newUser.save({ validateBeforeSave: false });
@@ -285,7 +285,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   }
 
   const otp = user.generateOTP();
-  console.log(otp);
+  // console.log(otp);
   await user.save({ validateBeforeSave: false });
 
   // send url and otp
@@ -376,7 +376,7 @@ exports.sendVerificationOtp = catchAsync(async (req, res, next) => {
 
   // get email OTP
   const otp = newUser.generateOTP();
-  console.log(otp);
+  // console.log(otp);
   await newUser.save({ validateBeforeSave: false });
 
   // send email message to confirm user email address

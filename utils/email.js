@@ -1,6 +1,6 @@
-const nodemailer = require('nodemailer');
-const pug = require('pug');
-const htmlToText = require('html-to-text');
+const nodemailer = require("nodemailer");
+const pug = require("pug");
+const htmlToText = require("html-to-text");
 
 module.exports = class Email {
   constructor(user, url, otp) {
@@ -12,7 +12,7 @@ module.exports = class Email {
   }
 
   newTransport() {
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === "production") {
       // Sendgrid
       //   return nodemailer.createTransport({
       //     service: 'SendGrid',
@@ -29,8 +29,8 @@ module.exports = class Email {
         secure: false, // true for 465, false for other ports
         auth: {
           user: process.env.BREVO_USERNAME,
-          pass: process.env.BREVO_PASSWORD
-        }
+          pass: process.env.BREVO_PASSWORD,
+        },
       });
     }
 
@@ -39,8 +39,8 @@ module.exports = class Email {
       port: process.env.EMAILTRAP_PORT,
       auth: {
         user: process.env.EMAILTRAP_USERNAME,
-        pass: process.env.EMAILTRAP_PASSWORD
-      }
+        pass: process.env.EMAILTRAP_PASSWORD,
+      },
     });
   }
 
@@ -50,7 +50,8 @@ module.exports = class Email {
     const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
       firstName: this.firstName,
       url: this.url,
-      subject
+      otp: this.otp,
+      subject,
     });
 
     // 2) Define email options
@@ -59,7 +60,7 @@ module.exports = class Email {
       to: this.to,
       subject,
       html,
-      text: htmlToText.fromString(html)
+      text: htmlToText.fromString(html),
     };
 
     // 3) Create a transport and send email
@@ -67,23 +68,23 @@ module.exports = class Email {
   }
 
   async sendWelcome() {
-    await this.send('welcome', 'Welcome to the Car rentals Family!');
+    await this.send("welcome", "Welcome to the Car rentals Family!");
   }
 
   async sendOTP() {
-    await this.send('emailOTP', 'Our Verification Code for Car Rentals');
+    await this.send("emailOTP", "Our Verification Code for Car Rentals");
   }
 
   async sendPasswordReset() {
     await this.send(
-      'passwordReset',
-      'Your password reset token (valid for only 10 minutes)'
+      "passwordReset",
+      "Your password reset token (valid for only 10 minutes)"
     );
   }
   async sendPasswordResetSuccess() {
     await this.send(
-      'passwordResetSuccess',
-      'Your password reset successfully changed'
+      "passwordResetSuccess",
+      "Your password reset successfully changed"
     );
   }
 };
